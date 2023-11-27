@@ -99,8 +99,10 @@ stages:
               . build/azure-pipelines/win32/exec.ps1
               . build/azure-pipelines/win32/retry.ps1
               $ErrorActionPreference = "Stop"
-              npm install -g node-gyp@10.0.1
-              $env:npm_config_node_gyp = (Get-Command node-gyp).Source
+              $nodeGypDir = "$(Agent.TempDirectory)/custom-packages"
+              mkdir "$nodeGypDir"
+              npm install node-gyp@10.0.1 -g --prefix "$nodeGypDir"
+              $env:npm_config_node_gyp = "${nodeGypDir}/node-gyp.ps1"
               $env:npm_config_arch = "$(NPM_ARCH)"
               retry { exec { yarn --frozen-lockfile --check-files } }
             env:
