@@ -104,7 +104,7 @@ stages:
               npm install node-gyp@10.0.1 -g --prefix "$nodeGypDir"
               $env:npm_config_node_gyp = "${nodeGypDir}/node_modules/node-gyp/bin/node-gyp.js"
               $env:npm_config_arch = "$(NPM_ARCH)"
-              node-gyp --version
+              node "${nodeGypDir}/node_modules/node-gyp/bin/node-gyp.js" --version
               retry { exec { yarn --frozen-lockfile --check-files } }
             env:
               PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
